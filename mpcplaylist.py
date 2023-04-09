@@ -59,10 +59,12 @@ for root, dirs, files in os.walk(wd, topdown=True):
 print('=' * 78)
 print('\n')
 for folder in workdir:
+    filelist = []
     print('-' * 78)
     print(folder)
     print('-' * 78)
     wf = os.listdir(folder)
+    wf.sort()
     total_files = len(wf)
     print("Files found:", total_files)
     for f in wf:
@@ -74,5 +76,28 @@ for folder in workdir:
             x.lower()
             # print(x)
             if x in Files_Video:
+                filelist.append(f)
                 print(f)
+    if len(filelist) > 0:
+        print(filelist)
+        pln = os.path.join(folder, '_playlist.mpcpl')
+        print(pln)
+        if os.path.isfile(pln) and overwrite == 0:
+            print('_playlist already exist!')
+        elif not path.isfile(pln) or overwrite == 1:
+            print('*** overwrite! ***')
+            try:  # ###[ save list as text playlist ]####################################
+                with open(pln, 'wt', encoding='utf-8', newline='\n') as pw:
+                    pw.write('MPCPLAYLIST\n')
+                    for count, line in enumerate(filelist):
+                        count += 1
+                        print(count, line)
+                        pva = str(count) + ',type,0\n'
+                        pw.write(pva)
+                        pva = str(count) + ',filename,' + line + '\n'
+                        pw.write(pva)
+            except Exception as err:
+                print('There was some error in the file operations.')
+                print(err)
+                print(type(err).__name__)
 # exit()
