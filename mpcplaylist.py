@@ -1,4 +1,3 @@
-
 import os
 from os import path
 from os.path import join, getsize
@@ -40,7 +39,7 @@ print(cwd)
 if wd != cwd:  # Exit if not in the correct directory
     exit(404)
 # ===========================================================================
-overwrite = 1  # set true if you want to replace existing playlists
+overwrite = 0  # set true if you want to replace existing playlists
 workdir = []
 print('[OK]')
 print('\n')
@@ -55,7 +54,6 @@ for root, dirs, files in os.walk(wd, topdown=True):
         workdir.append(d)
         print(d)
 
-# print(workdir)
 print('=' * 78)
 print('\n')
 for folder in workdir:
@@ -74,7 +72,6 @@ for folder in workdir:
             # (dir_name, filename) = os.path.split(f)
             (n, x) = os.path.splitext(f)
             x.lower()
-            # print(x)
             if x in Files_Video:
                 filelist.append(f)
                 print(f)
@@ -90,10 +87,8 @@ for folder in workdir:
                 with open(pln, 'wt', encoding='utf-8', newline='\n') as pw:
                     pw.write('MPCPLAYLIST\n')
                     for count, line in enumerate(filelist):
-                        tmp_txt = []
                         (subN, lineX) = os.path.splitext(line)
                         count += 1
-                        # print(count, line)
                         pva = str(count) + ',type,0\n'
                         pw.write(pva)
                         pva = str(count) + ',filename,' + line + '\n'
@@ -101,7 +96,6 @@ for folder in workdir:
                         for xtx in Files_Subtitle:
                             testname = subN + xtx
                             sub = os.path.join(folder, testname)
-                            # print('test: ' + sub)
                             if os.path.isfile(sub):
                                 print('Found file: ' + sub)
                                 pva = str(count) + ',subtitle,' + testname + '\n'
