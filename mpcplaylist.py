@@ -28,10 +28,10 @@ Files_Subtitle = ['.vtt', '.sub', '.ass', '.srt']
 # MPCPLAYLIST
 # 1,type,0
 # 1,filename,001 Introduction to If Else.mp4
-# 1,subtitle,001 Introduction to If Else_en.vtt
+# 1,subtitle,001 Introduction to If Else.vtt
 # 2,type,0
 # 2,filename,002 IF Else - Some Examples.mp4
-# 2,subtitle,002 IF Else - Some Examples_en.vtt
+# 2,subtitle,002 IF Else - Some Examples.vtt
 # ===========================================================================
 wd = 'C:\\tmp'
 os.chdir(wd)
@@ -90,12 +90,22 @@ for folder in workdir:
                 with open(pln, 'wt', encoding='utf-8', newline='\n') as pw:
                     pw.write('MPCPLAYLIST\n')
                     for count, line in enumerate(filelist):
+                        tmp_txt = []
+                        (subN, lineX) = os.path.splitext(line)
                         count += 1
-                        print(count, line)
+                        # print(count, line)
                         pva = str(count) + ',type,0\n'
                         pw.write(pva)
                         pva = str(count) + ',filename,' + line + '\n'
                         pw.write(pva)
+                        for xtx in Files_Subtitle:
+                            testname = subN + xtx
+                            sub = os.path.join(folder, testname)
+                            # print('test: ' + sub)
+                            if os.path.isfile(sub):
+                                print('Found file: ' + sub)
+                                pva = str(count) + ',subtitle,' + testname + '\n'
+                                pw.write(pva)
             except Exception as err:
                 print('There was some error in the file operations.')
                 print(err)
